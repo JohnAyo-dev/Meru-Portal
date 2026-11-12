@@ -1,0 +1,43 @@
+{
+  "name": "meru-portal",
+  "version": "2.0.0",
+  "description": "Meru Portal - a personal desktop command centre and lightweight browser",
+  "author": "Meru",
+  "license": "MIT",
+  "main": "main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "check": "node scripts/check.js",
+    "test": "node scripts/check.js",
+    "dist": "electron-builder",
+    "dist:dir": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.meru.portal",
+    "productName": "Meru Portal",
+    "artifactName": "${productName} Setup ${version}.${ext}",
+    "files": [
+      "main/**/*",
+      "renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.3.0",
+    "electron-builder": "^26.18.0"
+  }
+}

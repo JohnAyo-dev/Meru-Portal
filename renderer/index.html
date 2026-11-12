@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https: http: file: meru:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Meru Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="wallpaper" aria-hidden="true"></div>
+<div id="dim" aria-hidden="true"></div>
+
+<header class="topbar">
+  <button class="iconbtn avatarBtn" id="profileBtn" type="button" aria-label="Profile" title="Profile">
+    <span id="profileBtnInitials">M</span>
+    <img id="profileBtnImg" alt="">
+  </button>
+  <button class="iconbtn" id="focusBtn" type="button" aria-label="Focus mode" title="Focus mode (F)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3.5"></circle></svg>
+  </button>
+  <button class="iconbtn" id="downloadsBtn" type="button" aria-label="Downloads" title="Downloads">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+  </button>
+  <button class="iconbtn" id="settingsBtn" type="button" aria-label="Settings" title="Settings (Ctrl+,)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+  </button>
+</header>
+
+<main id="portal">
+  <div class="clockwrap">
+    <div class="clock" id="clock"></div>
+    <p class="greet"><span id="part"></span><span id="date"></span><span id="tagline"></span></p>
+  </div>
+
+  <form class="search" id="form" role="search">
+    <div class="engines" id="engines" role="group" aria-label="Search with"></div>
+    <div class="bar">
+      <input id="q" name="q" type="text" placeholder="Search or type an address" autocomplete="off" autofocus>
+      <span class="hint" aria-hidden="true">/</span>
+      <button class="go" type="submit"><span class="spin" aria-hidden="true"></span><span id="goLbl">Search</span></button>
+    </div>
+  </form>
+
+  <div class="groups" id="groups" role="group" aria-label="Shortcut groups"></div>
+  <nav class="tiles" id="tiles" aria-label="Shortcuts"></nav>
+  <nav class="recent" id="recent" aria-label="Recently visited"></nav>
+
+  <section class="widgets" id="widgets" aria-label="Widgets">
+    <article class="widget" data-widget="notes">
+      <header><h2>Notes</h2><span class="wstat" id="notesStat"></span></header>
+      <textarea id="notes" placeholder="Type anything here. It saves automatically." spellcheck="false"></textarea>
+    </article>
+
+    <article class="widget" data-widget="todo">
+      <header><h2>To do</h2><span class="wstat" id="todoStat"></span></header>
+      <form class="wform" id="todoForm"><input id="todoInput" type="text" placeholder="Add a task" autocomplete="off"><button type="submit" class="wadd" aria-label="Add task">+</button></form>
+      <ul class="todolist" id="todoList"></ul>
+    </article>
+
+    <article class="widget" data-widget="calendar">
+      <header>
+        <h2 id="calTitle">Calendar</h2>
+        <span class="calnav"><button type="button" id="calPrev" aria-label="Previous month">&#8249;</button><button type="button" id="calNext" aria-label="Next month">&#8250;</button></span>
+      </header>
+      <div class="cal" id="cal"></div>
+    </article>
+
+    <article class="widget" data-widget="weather">
+      <header><h2>Weather</h2><button type="button" class="wlink" id="weatherEdit">Change</button></header>
+      <div class="weather" id="weatherBody"><p class="muted">Set a city to see the weather.</p></div>
+    </article>
+
+    <article class="widget" data-widget="quote">
+      <header><h2>Daily quote</h2></header>
+      <blockquote id="quoteText"></blockquote>
+      <cite id="quoteBy"></cite>
+    </article>
+
+    <article class="widget" data-widget="clipboard">
+      <header><h2>Clipboard</h2><button type="button" class="wlink" id="clipClear">Clear</button></header>
+      <ul class="cliplist" id="clipList"></ul>
+    </article>
+
+    <article class="widget" data-widget="timer">
+      <header><h2>Timer</h2><span class="wstat" id="timerStat"></span></header>
+      <div class="timerdisplay" id="timerDisplay">25:00</div>
+      <div class="timerrow">
+        <input type="number" id="timerMinutes" min="1" max="180" step="1" value="25" aria-label="Timer minutes">
+        <button type="button" id="timerStart">Start</button>
+        <button type="button" id="timerReset">Reset</button>
+      </div>
+    </article>
+
+    <article class="widget" data-widget="stopwatch">
+      <header><h2>Stopwatch</h2><span class="wstat" id="stopStat"></span></header>
+      <div class="timerdisplay" id="stopDisplay">00:00.0</div>
+      <div class="timerrow">
+        <button type="button" id="stopStart">Start</button>
+        <button type="button" id="stopReset">Reset</button>
+      </div>
+    </article>
+
+    <article class="widget" data-widget="bookmarks">
+      <header><h2>Bookmarks</h2><button type="button" class="wlink" id="bmWidgetOpen">All</button></header>
+      <ul class="minilist" id="bmWidgetList"></ul>
+    </article>
+
+    <article class="widget" data-widget="recent">
+      <header><h2>Recent sites</h2><button type="button" class="wlink" id="recentWidgetClear">Clear</button></header>
+      <ul class="minilist" id="recentWidgetList"></ul>
+    </article>
+  </section>
+</main>
+
+<div id="browser" aria-hidden="true">
+  <div class="tabstrip" id="tabstrip"></div>
+  <div class="btoolbar">
+    <button type="button" id="bBack" aria-label="Back" title="Back">&#8592;</button>
+    <button type="button" id="bFwd" aria-label="Forward" title="Forward">&#8594;</button>
+    <button type="button" id="bReload" aria-label="Reload" title="Reload">&#8635;</button>
+    <form id="burlForm">
+      <input id="burl" type="text" inputmode="url" autocomplete="off" spellcheck="false" aria-label="Address">
+    </form>
+    <button type="button" id="bFind" aria-label="Find in page" title="Find in page (Ctrl+F)">F</button>
+    <button type="button" id="bZoomOut" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+    <button type="button" id="bZoomIn" aria-label="Zoom in" title="Zoom in">+</button>
+    <button type="button" id="bBookmark" aria-label="Bookmark this page" title="Bookmark">&#9734;</button>
+    <button type="button" id="bDownloads" aria-label="Downloads" title="Downloads">&#8595;</button>
+    <button type="button" id="bExt" aria-label="Open in system browser" title="Open in system browser">&#8599;</button>
+    <button type="button" id="bHome" class="home" aria-label="Back to Meru Portal" title="Home">M</button>
+  </div>
+  <div class="progress" id="bProgress"><i></i></div>
+  <div class="findbar" id="findbar">
+    <input id="findInput" type="text" placeholder="Find in page" autocomplete="off">
+    <span id="findCount"></span>
+    <button type="button" id="findPrev" aria-label="Previous match">&#8593;</button>
+    <button type="button" id="findNext" aria-label="Next match">&#8595;</button>
+    <button type="button" id="findClose" aria-label="Close find">&#215;</button>
+  </div>
+  <div class="views" id="views">
+    <div class="startpage" id="startpage" aria-hidden="true">
+      <div class="startinner">
+        <div class="starthead">
+          <div class="clock" id="startClock"></div>
+          <p class="greet"><span id="startPart"></span><span id="startDate"></span></p>
+        </div>
+        <form class="search startsearch" id="startForm" role="search">
+          <div class="bar">
+            <input id="startQ" type="text" placeholder="Search or type an address" autocomplete="off">
+            <button class="go" type="submit">Search</button>
+          </div>
+        </form>
+        <nav class="tiles starttiles" id="startTiles" aria-label="Shortcuts"></nav>
+        <nav class="recent startrecent" id="startRecent" aria-label="Recently visited"></nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<aside class="panel" id="downloadsPanel" aria-label="Downloads">
+  <header><h2>Downloads</h2><button type="button" class="pclose" data-close="downloadsPanel" aria-label="Close">&#215;</button></header>
+  <ul class="dlist" id="downloadList"></ul>
+</aside>
+
+<aside class="panel" id="historyPanel" aria-label="History">
+  <header><h2>History</h2><span class="pactions"><button type="button" id="histClear">Clear</button><button type="button" class="pclose" data-close="historyPanel" aria-label="Close">&#215;</button></span></header>
+  <ul class="hlist" id="historyList"></ul>
+</aside>
+
+<aside class="panel" id="bookmarksPanel" aria-label="Bookmarks">
+  <header><h2>Bookmarks</h2><span class="pactions"><button type="button" id="bmImportChrome">Chrome</button><button type="button" id="bmImportHtml">HTML</button><button type="button" id="bmExport">Export</button><button type="button" class="pclose" data-close="bookmarksPanel" aria-label="Close">&#215;</button></span></header>
+  <ul class="hlist" id="bookmarkList"></ul>
+</aside>
+
+<aside class="panel" id="profilePanel" aria-label="Profiles">
+  <header><h2>Profiles</h2><button type="button" class="pclose" data-close="profilePanel" aria-label="Close">&#215;</button></header>
+  <div class="profilebody">
+    <div class="profsection">
+      <div class="profhead"><h3>Your profiles</h3><button type="button" class="act" id="profileAdd">New profile</button></div>
+      <ul class="proflist" id="profileList"></ul>
+    </div>
+    <div class="profilehead">
+      <div class="avatar" id="profileAvatar"><b id="profileInitials">M</b><img id="profileImg" alt=""></div>
+      <div class="profileident"><h3 id="profileName">Your profile</h3><p id="profileTagline" class="muted"></p></div>
+    </div>
+    <label class="pfield">Display name<input id="profileNameInput" type="text" placeholder="Your name" autocomplete="off"></label>
+    <label class="pfield">Tagline<input id="profileTaglineInput" type="text" placeholder="A short line under the clock" autocomplete="off"></label>
+    <label class="pfield">Avatar colour<input type="color" id="profileColor"></label>
+    <div class="pfield"><span>Avatar image<small>JPG, PNG, WEBP, GIF or BMP</small></span>
+      <span class="pactions"><button type="button" class="act" id="profileAvatarUpload">Upload</button><button type="button" class="act" id="profileAvatarClear">Clear</button></span>
+    </div>
+    <div class="pstats" id="profileStats"></div>
+    <div class="row">
+      <button type="button" id="profilePersonalise">Personalise</button>
+      <button type="button" class="primary" id="profileSave">Save profile</button>
+    </div>
+  </div>
+</aside>
+
+<div class="palette" id="palette" aria-hidden="true">
+  <div class="palettebox">
+    <input id="paletteInput" type="text" placeholder="Type a command, shortcut, or address" autocomplete="off">
+    <ul class="palettelist" id="paletteList"></ul>
+    <footer><span>Enter to run</span><span>Esc to close</span></footer>
+  </div>
+</div>
+
+<dialog id="tileDlg">
+  <form id="tileForm" novalidate>
+    <h2 id="tileTitle">New shortcut</h2>
+    <label>Website address
+      <input id="fUrl" type="text" inputmode="url" placeholder="spotify.com" autocomplete="off">
+    </label>
+    <p class="err" id="fUrlErr"></p>
+    <label>Name
+      <input id="fName" type="text" autocomplete="off">
+    </label>
+    <div class="two">
+      <label>Group
+        <input id="fGroup" type="text" placeholder="Optional" autocomplete="off">
+      </label>
+      <label>Colour
+        <input id="fColor" type="color" value="#ff5a4d">
+      </label>
+    </div>
+    <label>Custom icon URL
+      <input id="fIcon" type="text" inputmode="url" placeholder="Optional" autocomplete="off">
+    </label>
+    <div class="row">
+      <button type="button" id="tileDelete" class="danger" hidden>Delete</button>
+      <span class="spacer"></span>
+      <button type="button" id="tileCancel">Cancel</button>
+      <button type="submit" class="primary" id="tileSave">Add shortcut</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="settingsDlg">
+  <div class="body">
+    <h2>Settings</h2>
+
+    <h3>Appearance</h3>
+    <label class="setrow"><span>Theme</span>
+      <select id="optTheme"><option value="dark">Dark</option><option value="light">Light</option></select>
+    </label>
+    <label class="setrow"><span>Accent colour</span><input type="color" id="optAccent"></label>
+    <label class="setrow"><span>24-hour clock</span><input type="checkbox" id="opt24"></label>
+    <label class="setrow"><span>Show seconds</span><input type="checkbox" id="optSec"></label>
+    <label class="setrow"><span>Show greeting</span><input type="checkbox" id="optGreet"></label>
+    <label class="setrow"><span>Clock font</span>
+      <select id="optClockFont">
+        <option value="'Bricolage Grotesque', system-ui, sans-serif">Bricolage</option>
+        <option value="system-ui, sans-serif">System</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+      </select>
+    </label>
+    <label class="setrow"><span>Clock size</span><input type="range" id="optClockSize" min="60" max="220" step="2"></label>
+    <label class="setrow"><span>Clock position</span>
+      <select id="optClockPos"><option value="center">Centre</option><option value="left">Left</option><option value="right">Right</option></select>
+    </label>
+    <label class="setrow"><span>Shortcut tile size</span><input type="range" id="optTileSize" min="72" max="150" step="2"></label>
+
+    <h3>Wallpaper</h3>
+    <div class="setrow"><span>Image<small>JPG, PNG, WEBP, GIF or BMP</small></span>
+      <span class="pactions"><button type="button" class="act" id="wpUpload">Upload</button><button type="button" class="act" id="wpClear">Clear</button></span>
+    </div>
+    <label class="setrow"><span>Image URL<small>Or paste a link to an image</small></span><input type="text" id="wpUrl" class="textin" placeholder="https://..."></label>
+    <label class="setrow"><span>Blur</span><input type="range" id="wpBlur" min="0" max="30" step="1"></label>
+    <label class="setrow"><span>Dim</span><input type="range" id="wpDim" min="0" max="90" step="1"></label>
+
+    <h3>Search</h3>
+    <label class="setrow"><span>Default engine</span><select id="optEngine"></select></label>
+    <div class="setrow"><span>Add engine<small>Use %s where the query goes</small></span>
+      <span class="pactions"><input type="text" id="engineName" class="textin small" placeholder="Name"><input type="text" id="engineUrl" class="textin small" placeholder="https://site/?q=%s"><button type="button" class="act" id="engineAdd">Add</button></span>
+    </div>
+    <ul class="enginelist" id="engineList"></ul>
+
+    <h3>Widgets</h3>
+    <label class="setrow"><span>Notes</span><input type="checkbox" id="wNotes"></label>
+    <label class="setrow"><span>To do</span><input type="checkbox" id="wTodo"></label>
+    <label class="setrow"><span>Calendar</span><input type="checkbox" id="wCalendar"></label>
+    <label class="setrow"><span>Weather</span><input type="checkbox" id="wWeather"></label>
+    <label class="setrow"><span>Daily quote</span><input type="checkbox" id="wQuote"></label>
+    <label class="setrow"><span>Clipboard history</span><input type="checkbox" id="wClipboard"></label>
+
+    <h3>Browser</h3>
+    <label class="setrow"><span>Open links</span>
+      <select id="optOpen"><option value="app">Inside Meru Portal</option><option value="external">In my default browser</option></select>
+    </label>
+    <label class="setrow"><span>Homepage<small>Used by the home button in the browser</small></span><input type="text" id="optHome" class="textin" placeholder="about:blank"></label>
+
+    <h3>Keyboard</h3>
+    <div class="setrow"><span>Focus search</span><button type="button" class="act bind" id="bindSearch">/</button></div>
+    <div class="setrow"><span>Command palette</span><button type="button" class="act bind" id="bindPalette">Ctrl+K</button></div>
+    <div class="setrow"><span>Settings</span><button type="button" class="act bind" id="bindSettings">Ctrl+,</button></div>
+    <div class="setrow"><span>Shortcuts</span><button type="button" class="act" id="bindReset">Reset keys</button></div>
+
+    <h3>Data</h3>
+    <div class="setrow"><span>Backup<small>Export or import all settings, shortcuts, notes and history</small></span>
+      <span class="pactions"><button type="button" class="act" id="dataExport">Export</button><button type="button" class="act" id="dataImport">Import</button></span>
+    </div>
+    <div class="setrow"><span>History<small>Clear recently visited sites</small></span><button type="button" class="act" id="dataClearHistory">Clear</button></div>
+    <div class="setrow"><span>Reset<small>Erase all Meru Portal data</small></span><button type="button" class="act danger" id="dataReset">Reset everything</button></div>
+
+    <div class="row">
+      <button type="button" id="aboutBtn">About</button>
+      <button type="button" class="primary" id="settingsClose">Done</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="aboutDlg">
+  <div class="body">
+    <h2>Meru Portal</h2>
+    <p class="muted" id="aboutVersion"></p>
+    <div class="aboutgrid" id="aboutInfo"></div>
+    <p class="muted small">A personal desktop command centre. Your data stays on this computer.</p>
+    <div class="row"><button type="button" class="act" id="aboutLogs">Open log folder</button><button type="button" class="primary" id="aboutClose">Close</button></div>
+  </div>
+</dialog>
+
+<div class="context" id="context" role="menu" aria-hidden="true"></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastMsg"></span><button type="button" id="undoBtn">Undo</button>
+</div>
+
+<script src="scripts/store.js"></script>
+<script src="scripts/ui.js"></script>
+<script src="scripts/state.js"></script>
+<script src="scripts/portal.js"></script>
+<script src="scripts/widgets.js"></script>
+<script src="scripts/browser.js"></script>
+<script src="scripts/settings.js"></script>
+<script src="scripts/profiles.js"></script>
+<script src="scripts/app.js"></script>
+</body>
+</html>

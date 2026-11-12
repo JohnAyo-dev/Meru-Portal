@@ -1,0 +1,14 @@
+node_modules/
+dist/
+out/
+build/
+*.log
+meru.log
+meru.log.*
+*.tmp
+*.corrupt-*
+meru-data.json
+meru-data.backup.json
+meru-data.pre-import.json
+.DS_Store
+Thumbs.db
